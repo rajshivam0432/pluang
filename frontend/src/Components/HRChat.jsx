@@ -7,10 +7,7 @@ import React, {
 } from "react";
 import axios from "axios";
 
-/**
- * HRChat - Chat UI for "HR Buddy" assignment
- * Supports memory, voice input, and Gemini-powered backend.
- */
+
 const HRChat = forwardRef((props, ref) => {
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState("");
@@ -19,10 +16,8 @@ const HRChat = forwardRef((props, ref) => {
   const recognitionRef = useRef(null);
   const chatEndRef = useRef(null);
 
-  // ✅ unique session per browser tab
   const sessionId = useRef(Math.random().toString(36).slice(2));
 
-  // Starter suggestions (HR context)
   const initialOptions = [
     "What is our leave policy?",
     "Show upcoming holidays.",
@@ -30,17 +25,14 @@ const HRChat = forwardRef((props, ref) => {
     "What benefits does the company provide?",
   ];
 
-  // Allow parent components to trigger messages
   useImperativeHandle(ref, () => ({
     ask: (prompt) => sendMessage(prompt),
   }));
 
-  // Scroll to latest message when updated
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Initialize speech recognition
   useEffect(() => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -69,7 +61,6 @@ const HRChat = forwardRef((props, ref) => {
     listening ? recognitionRef.current.stop() : recognitionRef.current.start();
   };
 
-  // 🧠 Send user message to backend
   const sendMessage = async (message) => {
     if (!message.trim()) return;
 
@@ -107,12 +98,11 @@ const HRChat = forwardRef((props, ref) => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <div className="w-full max-w-3xl bg-white shadow-xl rounded-xl p-6 space-y-6 border border-gray-200">
-        {/* Header */}
         <h1 className="text-2xl font-bold text-center text-blue-700">
           HR Buddy 🤖
         </h1>
 
-        {/* Starter Buttons */}
+     
         {messages.length === 0 && (
           <div className="space-y-4 text-center">
             <p className="font-semibold text-gray-700">
@@ -132,7 +122,6 @@ const HRChat = forwardRef((props, ref) => {
           </div>
         )}
 
-        {/* Chat Messages */}
         <div className="space-y-3 max-h-[65vh] overflow-y-auto pr-2">
           {messages.map((msg, idx) => (
             <div
@@ -153,7 +142,6 @@ const HRChat = forwardRef((props, ref) => {
             </div>
           ))}
 
-          {/* Typing Indicator */}
           {loading && (
             <div className="text-gray-500 text-sm animate-pulse">
               HR Buddy is typing...
@@ -163,7 +151,6 @@ const HRChat = forwardRef((props, ref) => {
           <div ref={chatEndRef}></div>
         </div>
 
-        {/* Input Section */}
         <form
           onSubmit={handleSubmit}
           className="flex gap-3 border-t pt-3 border-gray-200"
