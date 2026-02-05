@@ -69,10 +69,13 @@ const HRChat = forwardRef((props, ref) => {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/hrbot", {
-        message,
-        sessionId: sessionId.current,
-      });
+      const res = await axios.post(
+        "https://pluang-7edp.vercel.app/api/hrbot",
+        {
+          message,
+          sessionId: sessionId.current,
+        },
+      );
 
       const { response } = res.data;
       setMessages((prev) => [...prev, { from: "ai", text: response }]);
